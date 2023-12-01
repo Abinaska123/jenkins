@@ -5,10 +5,11 @@ pipeline {
         AWS_DEFAULT_REGION = 'eu-north-1'  // Add your AWS region
         AWS_ACCOUNT_ID = '591481069844'     // Add your AWS account ID
         DOCKER_REGISTRY_URL = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-        IMAGE_REPO_NAME = 'prod-laravel-api'
+        IMAGE_REPO_NAME = 'laravel-hello-world-web'
+        IMAGE_REPO_SECOND_NAME = 'mysql'
         IMAGE_TAG = 'latest'
-        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
-        DOCKERFILE_PATH = 'docker/php/Dockerfile'
+        //DOCKER_COMPOSE_FILE = 'docker-compose.yml'
+        //DOCKERFILE_PATH = 'docker/php/Dockerfile'
     }
 
     stages {
@@ -26,20 +27,20 @@ pipeline {
             }
         }
 
-        stage('Install Docker Compose') {
-            steps {
-                script {
-                    sh 'sudo curl -fsSL https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose'
-                    sh 'sudo chmod +x /usr/local/bin/docker-compose'
-                }
-            }
-        }
+        //stage('Install Docker Compose') {
+            //steps {
+                //script {
+                    //sh 'sudo curl -fsSL https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose'
+                    //sh 'sudo chmod +x /usr/local/bin/docker-compose'
+                //}
+            //}
+        //}
 
         stage('Build') {
             steps {
                 script {
                     // Build Laravel application
-                    sh "docker-compose -f $DOCKER_COMPOSE_FILE build"
+                    sh "docker-compose build"
                 }
             }
         }
@@ -49,6 +50,8 @@ pipeline {
                 script {
                     sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${DOCKER_REGISTRY_URL}/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
                     sh "docker push ${DOCKER_REGISTRY_URL}/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                    sh "docker tag ${IMAGE_REPO_SECOND_NAME}:${IMAGE_TAG} ${DOCKER_REGISTRY_URL}/${IMAGE_REPO_SECOND_NAME}:${IMAGE_TAG}"
+                    sh "docker push ${DOCKER_REGISTRY_URL}/${IMAGE_REPO_SECOND_NAME}:${IMAGE_TAG}"
                 }
             }
         }
