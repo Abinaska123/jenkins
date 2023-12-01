@@ -5,7 +5,7 @@ pipeline {
         AWS_DEFAULT_REGION = 'eu-north-1'  // Add your AWS region
         AWS_ACCOUNT_ID = '591481069844'     // Add your AWS account ID
         DOCKER_REGISTRY_URL = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
-        IMAGE_REPO_NAME = 'laravel-hello-world-web'
+        IMAGE_REPO_NAME = 'laravel-hello-world_web'
         IMAGE_REPO_SECOND_NAME = 'mysql'
         IMAGE_TAG = 'latest'
         //DOCKER_COMPOSE_FILE = 'docker-compose.yml'
