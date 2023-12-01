@@ -1,0 +1,13 @@
+version: '3.1'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:80"
+    command: ["-template", "/var/www/.env.example:/var/www/.env", "/usr/bin/supervisord", "-n", "-c", "/etc/supervisord.conf"]
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-password
+  mysql:
+    image: "mysql:5.7"
+    restart: always
+
